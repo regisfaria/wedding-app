@@ -1,9 +1,13 @@
-import mongoengine as mongo
+from mongoengine import *
 
-class Users(mongo.Document):
-  name = mongo.StringField(required=True)
-  username = mongo.StringField(required=True)
-  password = mongo.StringField(required=True)
-  privileges = mongo.StringField()
-  imageUrl = mongo.StringField()
-  imageKey = mongo.StringField()
+class EmbeddedUsers(EmbeddedDocument):
+  name = StringField()
+  imageUrl = StringField()
+
+class Users(Document):
+  name = StringField(required=True)
+  username = StringField(required=True)
+  password = StringField(required=True)
+  privileges = StringField()
+  imageUrl = StringField()
+  imageKey = StringField()

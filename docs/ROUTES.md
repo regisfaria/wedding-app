@@ -10,7 +10,8 @@ Here you will find documentation to be able to make requests for this API.
 6. [Update Post Active Status](#updateActivePost)
 7. [Update User Avatar](#updateUserAvatar)
 8. [Like Post](#like)
-9. [Delete Post](#deletePost)
+9. [Disike Post](#dislike)
+10. [Delete Post](#deletePost)
 
 
 ## **POST** Auth - {{ _.baseURL }}/auth <a id="auth"></a>
@@ -339,7 +340,7 @@ The url would look like:
 }
 ```
 
-## **PATCH** Like Post - {{ _.baseURL }}/posts/:postId <a id="like"></a>
+## **PATCH** Like Post - {{ _.baseURL }}/posts/like/:postId <a id="like"></a>
 ### AUTH REQUIRED
 To use auth, the request must contain the following header:
 
@@ -353,7 +354,7 @@ Token is an uuid generated throught the auth route.
 | postId   | true |
 
 The url would look like:
-- {baseurl}/posts/:postId
+- {baseurl}/posts/like/:postId
 
 Where postId is our required param and accept the following values:
 
@@ -365,7 +366,7 @@ Where postId is our required param and accept the following values:
 ### Example
 ```json
 // PATCH request to
-"{{ _.baseURL }}/posts/603aebfb6ee34adba1e0adac"
+"{{ _.baseURL }}/posts/like/603aebfb6ee34adba1e0adac"
 
 // response
 {
@@ -390,6 +391,62 @@ Where postId is our required param and accept the following values:
     "imageKey": "gallery/Wedding-2.jpg",
     "imageUrl": "https://wedding-app-anchor-loans-test.s3.amazonaws.com/gallery/7fbc3a13-4542-457b-b460-39f87b59c2bd-Wedding-2.jpg",
     "likes": 1,
+    "title": "Nice place"
+  }
+}
+```
+
+## **PATCH** Dislike Post - {{ _.baseURL }}/posts/dislike/:postId <a id="dislike"></a>
+### AUTH REQUIRED
+To use auth, the request must contain the following header:
+
+**"authorization": "token"**
+
+Token is an uuid generated throught the auth route. 
+
+### ROUTE PARAMS
+| Parameter | Required |
+| ------ | ----------- |
+| postId   | true |
+
+The url would look like:
+- {baseurl}/posts/dislike/:postId
+
+Where postId is our required param and accept the following values:
+
+| Parameter | Value |
+| ------ | ----------- |
+| postId   | string |
+
+
+### Example
+```json
+// PATCH request to
+"{{ _.baseURL }}/posts/dislike/603aebfb6ee34adba1e0adac"
+
+// response
+{
+  "data": {
+    "_id": {
+      "$oid": "603aebfb6ee34adba1e0adac"
+    },
+    "active": false,
+    "author": {
+      "$oid": "603aeb7b6ee34adba1e0ada8"
+    },
+    "comments": [
+      {
+        "author": {
+          "$oid": "603aeb956ee34adba1e0ada9"
+        },
+        "content": "Concordo demais!",
+        "identifier": "4bde31ec-3a87-4496-9a6a-57e8ad8c4b02"
+      }
+    ],
+    "description": "Must be in a place like this!",
+    "imageKey": "gallery/Wedding-2.jpg",
+    "imageUrl": "https://wedding-app-anchor-loans-test.s3.amazonaws.com/gallery/7fbc3a13-4542-457b-b460-39f87b59c2bd-Wedding-2.jpg",
+    "likes": 0,
     "title": "Nice place"
   }
 }
