@@ -8,6 +8,4 @@ def isTokenExpired(token):
 
   isTokenExpired = todayDatetime > nextWeekCreationDate
 
-  print(isTokenExpired)
-
   return isTokenExpired
