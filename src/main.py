@@ -5,12 +5,11 @@ import pathlib
 from datetime import datetime as dt
 from helpers.isTokenExpired import isTokenExpired
 from dotenv import load_dotenv
-
+from providers.hashProvider import HashProvider
 from uuid import uuid4
 from flask import Flask, request as flaskRequest, jsonify
 from flask_restful import Api, Resource
 from database.index import Database
-
 from aws.S3 import S3
 
 # models imports
@@ -47,9 +46,13 @@ def create_user():
   if userExists:
     return 'Username already in use', 400
 
+  hashProvider = HashProvider()
+
+  encryptedPassword = hashProvider.encrypt(request['password'])
+
   user = Users(name=request['name'],
               username=request['username'],
-              password=request['password'],
+              password=encryptedPassword,
               privileges=request['privileges'],
               imageUrl=f'{bucketURL}/avatars/standard-picture.jpg',
               imageKey='standard')
@@ -119,10 +122,16 @@ def create_comment():
 def authenticate():
   request = json.loads(flaskRequest.data)
 
-  user = Users.objects(username=request['username'], password=request['password']).first()
+  user = Users.objects(username=request['username']).first()
 
   if not user:
-    return 'Wrong username or password. Try again.',  404
+    return 'Wrong username. Try again.',  400
+
+  hashProvider = HashProvider()
+  passwordMatch = hashProvider.compareHashs(request['password'], user['password'])
+
+  if not passwordMatch:
+    return 'Wrong password. Try again.', 400
 
   tokenExists = Tokens.objects(user=user['id']).first()
 
