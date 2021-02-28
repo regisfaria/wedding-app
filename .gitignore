@@ -2,4 +2,6 @@ tmp/*.jpg
 tmp/*.jpeg
 tmp/*.png
 
-**/.env/**
+.env
+
+src/**/__pycache__/
