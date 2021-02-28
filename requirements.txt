@@ -1,0 +1,7 @@
+cryptography==3.4.6
+flask_mongoengine==1.0.0
+Flask_RESTful==0.3.8
+mongoengine==0.22.1
+Flask==1.1.2
+boto3==1.17.17
+python-dotenv==0.15.0
